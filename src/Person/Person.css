@@ -5,11 +5,13 @@
     box-shadow: 0 2px 3px #ccc;
     padding: 16px;
     text-align: center;
+    background-color: #abc;
 }
 
  @media(min-width: 500px){
     .Person{
         width: 450px;
-        color: '#DCC6F2'
+        color: '#DCC6F2'; 
+        background-color: #aac;
     }
 }  

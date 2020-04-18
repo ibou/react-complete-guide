@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
- 
-import classes from './App.css';
+import './App.css';
 import Person from './Person/Person';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
   state = {
@@ -14,6 +14,7 @@ class App extends Component {
     otherState: 'some other value',
     showPersons: false
   };
+
 
   nameChangedHandler = (event, id) => {
     const personIndex = this.state.persons.findIndex(p => {
@@ -31,8 +32,7 @@ class App extends Component {
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState({ persons: persons });
-    console.log(classes);
+    this.setState({ persons: persons }); 
   };
 
   deletePersonHandler = personIndex => {
@@ -55,33 +55,33 @@ class App extends Component {
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
-            return (
+            return (<ErrorBoundary key={person.id}>
               <Person
                 click={() => this.deletePersonHandler(index)}
                 name={person.name}
                 age={person.age}
                 key={person.id}
                 changed={event => this.nameChangedHandler(event, person.id)}
-              />
+              /></ErrorBoundary>
             );
           })}
         </div>
       );
 
-      btnClass = classes.Red;
+      btnClass = 'Red';
       console.log("object==",btnClass)
     }
 
     const assignedClasses = [];
     if (this.state.persons.length <= 2) {
-      assignedClasses.push(classes.red); // classes = ['red']
+      assignedClasses.push('red'); // classes = ['red']
     }
     if (this.state.persons.length <= 1) {
-      assignedClasses.push(classes.bold); // classes = ['red', 'bold']
+      assignedClasses.push('bold'); // classes = ['red', 'bold']
     }
 
     return (
-      <div className={classes.App}>
+      <div className="App">
         <h1>Hi, I'm a React App</h1>
         <p className={assignedClasses.join(' ')}>This is really working!</p>
         <button className={btnClass} onClick={this.togglePersonsHandler}>
