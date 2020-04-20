@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Person from "./Person/Person";
- 
-const persons = (props) => props.persons.map((person, index) => {
-    return ( 
-      <Person
-        name={person.name}
-        age={person.age}
-        key={person.id}
-        click={() => props.clicked(index)}
-        changed={event => props.changed(event, person.id)}
-      /> 
-    );
-  })
+import withClass from '../../hoc/withClass'; 
 
-export default persons;
+class Persons extends PureComponent {
+
+  getSnapshotBeforeUpdate(nextProps, nextState) {
+    console.log('[Persons.js] getSnapshotBeforeUpdate', nextProps, nextState);
+    return { message: 'Snapshot !' };
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('[Persons.js] componentDidUpdate', prevProps, prevState, snapshot);
+  }
+
+  render() {
+    console.log('[Persons.js] rendering ...');
+    return  this.props.persons.map((person, index) => {
+      return (
+        
+          <Person
+            name={person.name}
+            age={person.age}
+            key={person.id}
+            click={() => this.props.clicked(index)}
+            changed={event => this.props.changed(event, person.id)}
+            isAuth={this.props.isAuthenticated}
+          /> 
+      );
+      
+      
+    })
+  }
+}
+
+export default withClass(Persons, "Persons");
