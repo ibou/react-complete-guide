@@ -15,7 +15,6 @@ class Person extends Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-    // this.inputElement.focus();
     this.inputElementRef.current.focus();
     console.log(this.context.authenticated);
   }
@@ -27,8 +26,8 @@ class Person extends Component {
         {this.context.authenticated ? (
           <p>Authenticated!</p>
         ) : (
-          <p>Please log in</p>
-        )}
+            <p>Please log in</p>
+          )}
 
         <p onClick={this.props.click}>
           I'm {this.props.name} and I am {this.props.age} years old!
@@ -36,7 +35,6 @@ class Person extends Component {
         <p key="i2">{this.props.children}</p>
         <input
           key="i3"
-          // ref={(inputEl) => {this.inputElement = inputEl}}
           ref={this.inputElementRef}
           type="text"
           onChange={this.props.changed}
