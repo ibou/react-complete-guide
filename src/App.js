@@ -1,96 +1,56 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
+import { BrowserRouter, Route, NavLink } from 'react-router-dom';
 
-import './App.css';
-import Person from './Person/Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+// import Posts from './containers/Posts';
+import User from './containers/User';
+import Welcome from './containers/Welcome';
+
+const Posts = React.lazy(() => import('./containers/Posts'));
 
 class App extends Component {
   state = {
-    persons: [
-      { id: 'asfa1', name: 'Max', age: 28 },
-      { id: 'vasdf1', name: 'Manu', age: 29 },
-      { id: 'asdf11', name: 'Stephanie', age: 26 }
-    ],
-    otherState: 'some other value',
-    showPersons: false
-  };
+    showPosts: false
+  }
 
-
-  nameChangedHandler = (event, id) => {
-    const personIndex = this.state.persons.findIndex(p => {
-      return p.id === id;
+  modeHandler = () => {
+    this.setState(prevState => {
+      return { showPosts: !prevState.showPosts };
     });
-
-    const person = {
-      ...this.state.persons[personIndex]
-    };
-
-    // const person = Object.assign({}, this.state.persons[personIndex]);
-
-    person.name = event.target.value;
-
-    const persons = [...this.state.persons];
-    persons[personIndex] = person;
-
-    this.setState({ persons: persons }); 
   };
-
-  deletePersonHandler = personIndex => {
-    // const persons = this.state.persons.slice();
-    const persons = [...this.state.persons];
-    persons.splice(personIndex, 1);
-    this.setState({ persons: persons });
-  };
-
-  togglePersonsHandler = () => {
-    const doesShow = this.state.showPersons;
-    this.setState({ showPersons: !doesShow });
-  };
-
   render() {
-    let persons = null;
-    let btnClass = '';
-
-    if (this.state.showPersons) {
-      persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return (<ErrorBoundary key={person.id}>
-              <Person
-                click={() => this.deletePersonHandler(index)}
-                name={person.name}
-                age={person.age}
-                key={person.id}
-                changed={event => this.nameChangedHandler(event, person.id)}
-              /></ErrorBoundary>
-            );
-          })}
-        </div>
-      );
-
-      btnClass = 'Red';
-      console.log("object==",btnClass)
-    }
-
-    const assignedClasses = [];
-    if (this.state.persons.length <= 2) {
-      assignedClasses.push('red'); // classes = ['red']
-    }
-    if (this.state.persons.length <= 1) {
-      assignedClasses.push('bold'); // classes = ['red', 'bold']
-    }
-
     return (
-      <div className="App">
-        <h1>Hi, I'm a React App</h1>
-        <p className={assignedClasses.join(' ')}>This is really working!</p>
-        <button className={btnClass} onClick={this.togglePersonsHandler}>
-          Toggle Persons
-        </button>
-        {persons}
-      </div>
+
+      <React.Fragment>
+
+        <button onClick={this.modeHandler}> Toggle change</button>
+        {this.state.showPosts ? (
+          <Suspense fallback={<div>Loading....!</div>}>
+            <Posts />
+          </Suspense>
+        ) : (
+            <User />
+          )}
+      </React.Fragment>
+      // <BrowserRouter>
+      //   <React.Fragment>
+      //     <nav>
+      //       <NavLink to="/">Home</NavLink> |&nbsp;
+      //       <NavLink to="/user">User Page</NavLink> |&nbsp;
+      //       <NavLink to="/posts">Posts Page</NavLink>
+      //     </nav>
+      //     <Route path="/" component={Welcome} exact />
+      //     <Route path="/user" component={User} />
+      //     <Route
+      //       path="/posts"
+      //       render={() => (
+      //         <Suspense fallback={<div>Loading....!</div>}>
+      //           <Posts />
+      //         </Suspense>
+      //       )}
+      //     />
+      //   </React.Fragment>
+      // </BrowserRouter>
     );
-    // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
   }
 }
 
