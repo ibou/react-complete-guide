@@ -54,9 +54,6 @@ export const auth = (email, password, isSignup) => {
         }
         axios.post(url, authData)
             .then(response => {
-                console.log('=================Log in===================');
-                console.log(response.data);
-                console.log('====================================');
                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
                 localStorage.setItem('token', response.data.idToken);
                 localStorage.setItem('expirationDate', expirationDate);
@@ -77,19 +74,19 @@ export const setAuthRedirectPath = (path) => {
     };
 }
 
-export const authCheckState = () => {
+export const authCheckState = () => { 
     return dispatch => {
         const token = localStorage.getItem('token');
         if (!token) {
             dispatch(logout());
         } else {
             const expirationDate = new Date(localStorage.getItem('expirationDate')); 
-            if (expirationDate > new Date()) {
+            if (expirationDate <= new Date()) {
                 dispatch(logout());
             } else {
                 const userId = localStorage.getItem('userId'); 
                 dispatch(authSuccess(token, userId));
-                dispatch(checkAuthTimeout(expirationDate.getSeconds() - new Date().getSeconds()));
+                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime())/1000));
             }
         }
     };

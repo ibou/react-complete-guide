@@ -1,10 +1,12 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updateObject } from "../../store/utility";
+import { updateObject } from "../../shared/utility";
+
 const initialState = {
     orders: [],
     loading: false,
     purchased: false
 };
+
 const purchaseInit = (state) => {
     return updateObject(state, {
         purchased: false,
