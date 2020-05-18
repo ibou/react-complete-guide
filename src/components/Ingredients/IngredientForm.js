@@ -4,22 +4,20 @@ import Card from '../UI/Card';
 import './IngredientForm.css';
 
 const IngredientForm = React.memo(props => {
-  const [enteredTitle, setEnteredTitle] = useState('Ibra');
-  const [enteredAmount, setEnteredAmount] = useState(0); 
+  let r = Math.random().toString(36).substring(7);
+  let n = (Math.random()*100).toFixed();
+  const [enteredTitle, setEnteredTitle] = useState(r.toUpperCase());
+  const [enteredAmount, setEnteredAmount] = useState(n); 
 
   const submitHandler = event => {
     event.preventDefault();
-    console.log('====================================');
-    console.log(enteredTitle);
-    console.log(enteredAmount);
-    console.log('====================================');
+    const ingredient = {
+      title: enteredTitle,
+      amount: enteredAmount
+    };
+    props.addIngredient(ingredient);  
   };
-
-  const changedHandler = event =>{
-
-
-  }
-
+ 
   return (
     <section className="ingredient-form">
       <Card>
