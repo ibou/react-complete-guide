@@ -10,13 +10,15 @@ const IngredientForm = React.memo(props => {
   const [enteredTitle, setEnteredTitle] = useState(r.toUpperCase());
   const [enteredAmount, setEnteredAmount] = useState(n); 
 
+console.log('==============IngredientForm======================'); 
+
   const submitHandler = event => {
     event.preventDefault();
     const ingredient = {
       title: enteredTitle,
       amount: enteredAmount
     };
-    props.addIngredient(ingredient);  
+    props.onAddIngredient(ingredient);  
   };
  
   return (

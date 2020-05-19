@@ -1,4 +1,4 @@
-import React, { useReducer,  useEffect, useCallback } from 'react';
+import React, { useReducer, useEffect, useCallback } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
@@ -43,7 +43,7 @@ const httpReducer = (currentHttpState, action) => {
 
 const Ingredients = () => {
   const [userIngredients, dispatch] = useReducer(ingredientsReducer, []);
-  const [httpState, dispatchHttp] = useReducer(httpReducer, { loading: false, error: null }); 
+  const [httpState, dispatchHttp] = useReducer(httpReducer, { loading: false, error: null });
 
   useEffect(() => {
     console.log('RENDERING INGREDIENTS', userIngredients);
@@ -57,7 +57,7 @@ const Ingredients = () => {
 
   }, []);
 
-  const addIngredientHandler = ingredient => { 
+  const addIngredientHandler = useCallback(ingredient => {
     dispatchHttp({ type: 'SEND' });
     fetch('https://react-hooks-update-445e1.firebaseio.com/ingredients.json', {
       method: 'POST',
@@ -76,10 +76,10 @@ const Ingredients = () => {
             id: responseData.name, ...ingredient
           }
         });
-      }).catch(error => { 
+      }).catch(error => {
         dispatchHttp({ type: 'ERROR', errorMessage: '... Something wrong bad while adding : ' + error.message });
       });;
-  };
+  }, []);
 
 
   const removeIngredientHandler = ingredientId => {
@@ -89,18 +89,20 @@ const Ingredients = () => {
     }).then(response => {
       dispatch({ type: 'DELETE', id: ingredientId });
       dispatchHttp({ type: 'RESPONSE' });
-    }).catch(error => { 
-      dispatchHttp({ type: 'ERROR', errorMessage:'... Something wrong bad: ' + error.message  });
+    }).catch(error => {
+      dispatchHttp({ type: 'ERROR', errorMessage: '... Something wrong bad: ' + error.message });
     });
   };
-  const clearError = () => { 
-    dispatchHttp({ type: 'CLEAR'});
+  const clearError = () => {
+    dispatchHttp({ type: 'CLEAR' });
   }
   return (
     <div className="App">
 
       {httpState.error && <ErrorModal onClose={clearError}>{httpState.error}</ErrorModal>}
-      <IngredientForm addIngredient={addIngredientHandler} loading={httpState.loading} />
+      <IngredientForm
+        onAddIngredient={addIngredientHandler}
+        loading={httpState.loading} />
 
       <section>
         <Search onLoadIngredients={filteredIngredientsHandler} />
