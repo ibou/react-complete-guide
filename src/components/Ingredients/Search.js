@@ -8,9 +8,20 @@ const Search = React.memo(props => {
   const [enteredFilter, setEnteredFilter] = useState('');
   const inputRef = useRef();
 
-
   useEffect(() => {
+    const { current } = inputRef;
 
+    const handleFocus = () => {
+      current.classList.add('active');
+    }
+    const handleBlur = () => {
+      current.classList.remove('active');
+    }
+
+    current.addEventListener('focus', handleFocus);
+    current.addEventListener('blur', handleBlur);
+ 
+    
     const timer = setTimeout(() => {
       if (enteredFilter === inputRef.current.value) {
         const query =
@@ -35,6 +46,10 @@ const Search = React.memo(props => {
 
     return ()=>{
       clearTimeout(timer);
+ 
+        current.removeEventListener('focus', handleFocus);
+        current.removeEventListener('blur', handleBlur); 
+  
     } 
   }, [enteredFilter, onLoadIngredients]);
 

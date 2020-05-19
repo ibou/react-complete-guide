@@ -28,3 +28,7 @@
     flex-direction: row;
   }
 }
+
+.active{
+  background-color: lightsalmon;
+}
