@@ -5,7 +5,7 @@ import './IngredientForm.css';
 import LoadingIndicator from '../UI/LoadingIndicator';
 
 const IngredientForm = React.memo(props => {
-  let r = Math.random().toString(36).substr(8)+' '+Math.random().toString(36).substr(4,2);
+  let r = Math.random().toString(36).substr(9)+' '+Math.random().toString(36).substr(4,2);
   let n = (Math.random()*100).toFixed();
   const [enteredTitle, setEnteredTitle] = useState(r.toUpperCase());
   const [enteredAmount, setEnteredAmount] = useState(n); 
