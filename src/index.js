@@ -1,27 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+
 import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
-import axios from 'axios';
+import configureProductsStore from './hooks-store/products-store'; 
+configureProductsStore();
 
-axios.interceptors.request.use(request => { 
-    console.log(request); 
-    return request;
-}, error=>{
-    console.log("...request", error);
-    return Promise.reject(error);
-});
-
-axios.interceptors.response.use(response => { 
-    console.log('====================================');
-    console.log(response);
-    console.log('====================================');
-    return response;
-}, error=>{
-    console.log(error);
-    return Promise.reject(error);
-});
-
-ReactDOM.render( <App />, document.getElementById( 'root' ) );
-registerServiceWorker();
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  document.getElementById('root')
+);
